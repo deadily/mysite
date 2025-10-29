@@ -1,0 +1,10 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.as_p }}
+    <button type="submit">Добавить</button>
+</form>
+{% endblock content %}

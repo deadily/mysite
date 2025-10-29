@@ -1,0 +1,14 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<h2>Удалить аккаунт</h2>
+
+<p><strong>Внимание!</strong> Это действие нельзя отменить. Все ваши данные будут безвозвратно удалены.</p>
+
+<form method="post">
+  {% csrf_token %}
+  <p>Вы уверены, что хотите удалить свой аккаунт?</p>
+  <button type="submit">Да, удалить мой аккаунт</button>
+  <a href="{% url 'polls:profile' %}">Отмена</a>
+</form>
+{% endblock content %}
