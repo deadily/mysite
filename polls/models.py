@@ -17,6 +17,13 @@ class UserProfile(models.Model):
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
+    description_short = models.TextField(
+        "краткое описание",
+        max_length=300,
+        blank=True,
+        null=True,
+        help_text="кратенько кратко"
+    )
     pub_date = models.DateTimeField('date published', auto_now_add=True)
     image = models.ImageField(upload_to='question_images/', blank=True, null=True)
     question_user = models.ForeignKey(User, on_delete=models.CASCADE)

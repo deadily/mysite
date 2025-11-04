@@ -1,16 +1,26 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-{% if latest_question_list %}
-<ul>
-    {% for question in latest_question_list %}
-    <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a> </li>
-    {% endfor %}
-</ul>
-    {% else %}
-     <p>
-         Нет вопросов!
-     </p>
+    <h2>Активные опросы</h2>
 
-{% endif %}
+    {% if questions %}
+        <ul>
+            {% for question in questions %}
+                <li>
+                    <h3><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></h3>
+
+                    <small>
+                        Автор: {{ question.question_user.username }} |
+                        Опубликовано: {{ question.pub_date|date:"d.m.Y" }}
+                    </small>
+
+                    {% if not question.is_active and request.user.is_authenticated and request.user.is_staff %}
+                        <span>(Неактивен)</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет доступных опросов.</p>
+    {% endif %}
 {% endblock content %}

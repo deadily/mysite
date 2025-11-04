@@ -15,15 +15,17 @@ from .forms import SignUpForm, ProfileUpdateForm, QuestionForm, ChoiceFormSet
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+    context_object_name = 'questions'
 
     def get_queryset(self):
         now = timezone.now()
-        all_questions = Question.objects.filter(pub_date__lte=now)
 
-        active_questions = [q for q in all_questions if q.is_active()]
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return Question.objects.all().order_by('-pub_date')
 
-        return sorted(active_questions, key=lambda q: q.pub_date, reverse=True)
+        published = Question.objects.filter(pub_date__lte=now)
+        active = [q for q in published if q.is_active()]
+        return sorted(active, key=lambda q: q.pub_date, reverse=True)
 
 class DetailView(generic.DetailView):
     model = Question
